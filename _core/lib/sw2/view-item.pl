@@ -116,10 +116,10 @@ foreach (1 .. $pc{weaponNum}){
   push(@weapons, {
     USAGE => $pc{'weapon'.$_.'Usage'},
     REQD  => $pc{'weapon'.$_.'Reqd'},
-    ACC   => $pc{'weapon'.$_.'Acc'},
+    ACC   => $pc{'weapon'.$_.'Acc'} // '―',
     RATE  => $pc{'weapon'.$_.'Rate'},
     CRIT  => $pc{'weapon'.$_.'Crit'},
-    DMG   => $pc{'weapon'.$_.'Dmg'},
+    DMG   => $pc{'weapon'.$_.'Dmg'} // '―',
     RANGE => $pc{category} =~ /投擲|ボウ|クロスボウ|ガン/ ? $pc{'weapon'.$_.'Range'} : undef,
     NOTE  => $pc{'weapon'.$_.'Note'},
   } );
