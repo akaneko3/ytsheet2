@@ -14,6 +14,7 @@ window.onload = function() {
   checkStage();
   checkWorks();
   checkSyndrome();
+  encroachModeChanged();
   calcStt();
   calcEffect();
   calcMagic();
@@ -195,7 +196,7 @@ function calcSaving(){
 }
 let magicDice = 0;
 function calcMagicDice(){
-  magicDice = Math.ceil(status['mind'] + Number(form.skillWill.value)+Number(form.skillAddWill.value) / 2) + Number(form.magicAdd.value);
+  magicDice = Math.ceil(status['mind'] + Number(form.skillWill.value) + Number(form.skillAddWill.value)) / 2 + Number(form.magicAdd.value);
   document.getElementById('magic-total').textContent = magicDice;
 }
 // 技能
@@ -448,6 +449,33 @@ function encroachBonusSet(enc){
       break;
     }
   }
+}
+
+function encroachModeChanged() {
+  const checkbox = document.querySelector('input[name="encroachFixed"]');
+  const fixed = checkbox != null && checkbox.checked;
+
+  const lifePathNode = document.getElementById('lifepath');
+  lifePathNode.classList.toggle('encroach-fixed', fixed);
+
+  const awakenInputCell = lifePathNode.querySelector('tbody.awaken tr > td:nth-child(2)');
+  const awakenNoteCell = lifePathNode.querySelector('tbody.awaken tr > td:last-child');
+  const impulseInputCell = lifePathNode.querySelector('tbody.impulse tr:first-child > td:nth-child(2)');
+  const impulseNoteCell = lifePathNode.querySelector('tbody.impulse tr:first-child > td:last-child');
+
+  if (fixed) {
+    awakenInputCell.setAttribute('colspan', '2');
+    awakenNoteCell.setAttribute('colspan', '2');
+    impulseInputCell.setAttribute('colspan', '2');
+    impulseNoteCell.setAttribute('colspan', '2');
+  } else {
+    awakenInputCell.removeAttribute('colspan');
+    awakenNoteCell.removeAttribute('colspan');
+    impulseInputCell.removeAttribute('colspan');
+    impulseNoteCell.removeAttribute('colspan');
+  }
+
+  calcEncroach();
 }
 
 // ロイス ----------------------------------------
@@ -751,7 +779,7 @@ function calcCombo(num){
 function addCombo(copyBaseNum){
   const row = createRow('combo','comboNum');
   const num = form.comboNum.value;
-  document.querySelector(`#combo-list > div:nth-of-type(${copyBaseNum||num-1})`).after(row);
+  document.querySelector(`#combo-list`).appendChild(row);
 
   if(copyBaseNum){
     row.querySelectorAll('[name]').forEach(node => {

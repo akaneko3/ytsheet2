@@ -111,7 +111,7 @@ print <<"HTML";
         <ul>
           <li onclick="sectionSelect('common');"><span>魔物</span><span>データ</span>
           <li onclick="sectionSelect('palette');"><span><span class="shorten">ユニット(</span>コマ<span class="shorten">)</span></span><span>設定</span>
-          <li onclick="sectionSelect('color');" class="color-icon" title="カラーカスタム">
+          <li onclick="sectionSelect('color');" class="color-icon" title="シートデザインカスタム">
           <li onclick="view('text-rule')" class="help-icon" title="テキスト整形ルール">
           <li onclick="nightModeChange()" class="nightmode-icon" title="ナイトモード切替">
           <li onclick="exportAsJson()" class="download-icon" title="JSON出力">
@@ -156,12 +156,12 @@ HTML
     print '<input type="password" name="pass"><br>';
   }
   print <<"HTML";
-<input type="radio" name="protect" value="none"@{[ $pc{protect} eq 'none'?' checked':'' ]}> 保護しない（誰でも編集できるようになります）
+        <input type="radio" name="protect" value="none"@{[ $pc{protect} eq 'none'?' checked':'' ]}> 保護しない（誰でも編集できるようになります）
       </fieldset>
       </details>
 HTML
 }
-  print <<"HTML";
+print <<"HTML";
       <dl class="box" id="hide-options">
         <dt>閲覧可否設定
         <dd id="forbidden-checkbox">
@@ -204,16 +204,16 @@ print <<"HTML";
         <div>
           <dl id="character-name">
             <dt>名称
-            <dd>@{[ input('monsterName','text',"setName") ]}
+            <dd>@{[ input 'monsterName','text',"setName",'id="sub-name"' ]}
           </dl>
           <dl id="aka">
             <dt>名前
-            <dd>@{[ input 'characterName','text','setName','placeholder="※名前を持つ魔物のみ"' ]}
+            <dd>@{[ input 'characterName','text','setName','id="main-name" placeholder="※名前を持つ魔物のみ"' ]}
           </dl>
         </div>
         <dl id="player-name">
           <dt>製作者
-          <dd>@{[input('author')]}
+          <dd>@{[ input 'author' ]}
         </dl>
       </div>
 
@@ -370,7 +370,7 @@ print <<"HTML";
           常時型　　（<i class="s-icon passive"></i>）：<code>[常]</code><code>○</code> <code>◯</code> <code>〇</code><br>
 HTML
 if($::SW2_0){
-print <<"HTML";
+  print <<"HTML";
           主動作型　（<i class="s-icon major0"   ></i>）：<code>[主]</code><code>＞</code> <code>▶</code> <code>〆</code><br>
           補助動作型（<i class="s-icon minor0"   ></i>）：<code>[補]</code><code>≫</code> <code>&gt;&gt;</code> <code>☆</code><br>
           宣言型　　（<i class="s-icon active0"  ></i>）：<code>[宣]</code><code>🗨</code> <code>□</code> <code>☑</code><br>
@@ -378,7 +378,7 @@ print <<"HTML";
           条件選択型（<i class="s-icon selection"></i>）：<code>[選]</code><code>▼</code><br>
 HTML
 } else {
-print <<"HTML";
+  print <<"HTML";
           戦闘準備型（<i class="s-icon setup"  ></i>）：<code>[準]</code><code>△</code><br>
           主動作型　（<i class="s-icon major"  ></i>）：<code>[主]</code><code>＞</code> <code>▶</code> <code>〆</code><br>
           補助動作型（<i class="s-icon minor"  ></i>）：<code>[補]</code><code>≫</code> <code>&gt;&gt;</code> <code>☆</code><br>
@@ -395,7 +395,7 @@ print <<"HTML";
           <ul id="loots-num">
 HTML
 foreach my $num (1 .. $pc{lootsNum}){ print "<li id='loots-num${num}'><span class='handle'></span>".input("loots${num}Num",'','','list="data-roots-num"'); }
-print <<"HTML";
+  print <<"HTML";
           </ul>
           <ul id="loots-item">
 HTML
@@ -429,7 +429,7 @@ print <<"HTML";
   </main>
   <footer>
     <p class="notes">(C)Group SNE「ソード・ワールド2.0／2.5」</p>
-    <p class="copyright">©<a href="https://yutorize.2-d.jp">ゆとらいず工房</a>「ゆとシートⅡ」ver.${main::ver}</p>
+    <p class="copyright">©<a href="https://yutorize.work">ゆとらいず工房</a>「ゆとシートⅡ」ver.${main::ver}</p>
   </footer>
   <datalist id="data-intellect">
     <option value="なし">

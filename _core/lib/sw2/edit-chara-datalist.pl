@@ -35,6 +35,7 @@ sub printCharaDataList {
     <option value="1H騎">
     <option value="2H">
     <option value="2H#">
+    <option value="2H投">
     <option value="振2H">
     <option value="突2H">
   </datalist>
@@ -82,6 +83,13 @@ sub printCharaDataList {
     <option value="バルカン語">
     <option value="翼人語">
     <option value="魔神語">
+  </datalist>
+  <datalist id="list-currency-name">
+    <option value="闘技場ポイント">
+  </datalist>
+  <datalist id="list-currency-unit">
+    <option value="P">
+    <option value="点">
   </datalist>
 HTML
 }

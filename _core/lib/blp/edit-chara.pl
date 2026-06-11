@@ -127,7 +127,7 @@ print <<"HTML";
         <ul>
           <li onclick="sectionSelect('common');"><span>キャラ<span class="shorten">クター</span></span><span>データ</span>
           <li onclick="sectionSelect('palette');"><span><span class="shorten">ユニット(</span>コマ<span class="shorten">)</span></span><span>設定</span>
-          <li onclick="sectionSelect('color');" class="color-icon" title="カラーカスタム">
+          <li onclick="sectionSelect('color');" class="color-icon" title="シートデザインカスタム">
           <li onclick="view('text-rule')" class="help-icon" title="テキスト整形ルール">
           <li onclick="nightModeChange()" class="nightmode-icon" title="ナイトモード切替">
           <li onclick="exportAsJson()" class="download-icon" title="JSON出力">
@@ -172,12 +172,12 @@ HTML
     print '<input type="password" name="pass"><br>';
   }
   print <<"HTML";
-<input type="radio" name="protect" value="none"@{[ $pc{protect} eq 'none'?' checked':'' ]}> 保護しない（誰でも編集できるようになります）
+        <input type="radio" name="protect" value="none"@{[ $pc{protect} eq 'none'?' checked':'' ]}> 保護しない（誰でも編集できるようになります）
       </fieldset>
       </details>
 HTML
 }
-  print <<"HTML";
+print <<"HTML";
       <dl class="box" id="hide-options">
         <dt>閲覧可否設定
         <dd id="forbidden-checkbox">
@@ -216,14 +216,14 @@ print <<"HTML";
         <div>
           <dl id="character-name">
             <dt>キャラクター名
-            <dd>@{[input('characterName','text',"setName",'required')]}
+            <dd>@{[ input 'characterName','text',"setName",'id="main-name" required' ]}
             <dt class="ruby">ふりがな
-            <dd>@{[input('characterNameRuby','text',"setName")]}
+            <dd>@{[ input 'characterNameRuby','text',"setName" ]}
           </dl>
         </div>
         <dl id="player-name">
           <dt>プレイヤー名
-          <dd>@{[input('playerName')]}
+          <dd>@{[ input 'playerName' ]}
         </dl>
       </div>
 
@@ -488,7 +488,7 @@ print <<"HTML";
           <tbody id="bloodarts-list">
 HTML
 foreach my $num (1 .. 3) {
-print <<"HTML";
+  print <<"HTML";
             <tr id="bloodarts${num}">
               <td class="handle">
               <td>@{[input "bloodarts${num}Name"]}
@@ -511,8 +511,8 @@ print <<"HTML";
           <tbody id="arts-list">
 HTML
 foreach my $num ('TMPL',1 .. $pc{artsNum}) {
-  if($num eq 'TMPL'){ print '<template id="arts-template">' }
-print <<"HTML";
+  print '<template id="arts-template">' if($num eq 'TMPL');
+  print <<"HTML";
             <tr id="arts-row${num}">
               <td class="handle">
               <td>@{[input "arts${num}Name"]}
@@ -522,7 +522,7 @@ print <<"HTML";
               <td>@{[input "arts${num}Limited",'','','list="list-limited"']}
               <td>@{[input "arts${num}Note"]}
 HTML
-  if($num eq 'TMPL'){ print '</template>' }
+  print '</template>' if($num eq 'TMPL');
 }
 print <<"HTML";
         </table>
@@ -576,8 +576,8 @@ print <<"HTML";
             <td id="history0-exp">$pc{history0Exp}
 HTML
 foreach my $num ('TMPL',1 .. $pc{historyNum}) {
-  if($num eq 'TMPL'){ print '<template id="history-template">' }
-print <<"HTML";
+  print '<template id="history-template">' if($num eq 'TMPL');
+  print <<"HTML";
           <tbody id="history-row${num}">
           <tr>
             <td class="handle" rowspan="2">
@@ -589,7 +589,7 @@ print <<"HTML";
           <tr>
             <td colspan="5" class="left">@{[input("history${num}Note",'','','placeholder="備考"')]}
 HTML
-  if($num eq 'TMPL'){ print '</template>' }
+  print '</template>' if($num eq 'TMPL');
 }
 print <<"HTML";
           <tfoot id="history-foot">
@@ -646,7 +646,7 @@ print <<"HTML";
   </main>
   <footer>
     <p class="notes">©からすば晴／N.G.P.／アークライト／新紀元社「人鬼血盟RPG ブラッドパス」</p>
-    <p class="copyright">©<a href="https://yutorize.2-d.jp">ゆとらいず工房</a>「ゆとシートⅡ」ver.${main::ver}</p>
+    <p class="copyright">©<a href="https://yutorize.work">ゆとらいず工房</a>「ゆとシートⅡ」ver.${main::ver}</p>
   </footer>
   <datalist id="list-belief">
     <option value="義士">

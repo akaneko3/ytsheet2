@@ -86,7 +86,7 @@ print <<"HTML";
         <h2><span></span></h2>
         <ul>
           <li onclick="sectionSelect('common');"><span>アイテム</span><span>データ</span>
-          <li onclick="sectionSelect('color');" class="color-icon" title="カラーカスタム">
+          <li onclick="sectionSelect('color');" class="color-icon" title="シートデザインカスタム">
           <li onclick="view('text-rule')" class="help-icon" title="テキスト整形ルール">
           <li onclick="nightModeChange()" class="nightmode-icon" title="ナイトモード切替">
           <li onclick="exportAsJson()" class="download-icon" title="JSON出力">
@@ -131,12 +131,12 @@ HTML
     print '<input type="password" name="pass"><br>';
   }
   print <<"HTML";
-<input type="radio" name="protect" value="none"@{[ $pc{protect} eq 'none'?' checked':'' ]}> 保護しない（誰でも編集できるようになります）
+        <input type="radio" name="protect" value="none"@{[ $pc{protect} eq 'none'?' checked':'' ]}> 保護しない（誰でも編集できるようになります）
       </fieldset>
       </details>
 HTML
 }
-  print <<"HTML";
+print <<"HTML";
       <dl class="box" id="hide-options">
         <dt>閲覧可否設定
         <dd id="forbidden-checkbox">
@@ -162,18 +162,23 @@ HTML
         <div>
           <dl id="character-name">
             <dt>名称
-            <dd>@{[ input('itemName','text',"setName('itemName')",'list="list-item-name"') ]}
+            <dd>@{[ input 'itemName','text',"setName",'id="main-name" list="list-item-name"' ]}
           </dl>
         </div>
         <dl id="player-name">
           <dt>製作者
-          <dd>@{[input('author')]}
+          <dd>@{[ input 'author' ]}
         </dl>
       </div>
       
       <div class="box input-data in-toc" data-content-title="基本データ">
-      <label>@{[ input 'magic', 'checkbox' ]}<span>魔法のアイテム</span></label>
-      <!-- <label>@{[ input 'school', 'checkbox' ]}　流派装備</label> -->
+      <dl class="icon-checkboxes"><dt>アイコン<dd>
+        @{[ checkbox 'iconMagic'  , "<img class='i-icon' src=\"${set::icon_dir}wp_magic.png\">魔法のアイテム" ]}
+        @{[ checkbox 'iconLocal'  , "<img class='i-icon' src=\"${set::icon_dir}item_local.png\">地方特産品" ]}<br>
+        @{[ checkbox 'iconSchool' , "<img class='i-icon' src=\"${set::icon_dir}wp_school.png\">流派アイテム" ]}
+        @{[ checkbox 'iconSchoolA', "<img class='i-icon' src=\"${set::icon_dir}wp_school_a.png\">流派アイテム（アルフレイム）" ]}
+        @{[ checkbox 'iconSchoolT', "<img class='i-icon' src=\"${set::icon_dir}wp_school_t.png\">流派アイテム（テラスティア）" ]}
+      </dl>
       <hr>
       <dl><dt>基本取引価格<dd>@{[ input 'price','','','list="list-item-price"' ]}G</dl>
       <dl><dt>知名度  <dd>@{[ input 'reputation', 'text','','pattern="^[0-9\/／]+$"' ]} 数字と／のみ入力可</dl>
@@ -207,7 +212,7 @@ foreach my $num ('TMPL', 1 .. $pc{weaponNum}){
           @{[ $num eq 'TMPL' ? "</template>" : '' ]}
 HTML
 }
-  print <<"HTML";
+print <<"HTML";
       </table>
       <div class="add-del-button"><a onclick="addWeapon()">▼</a><a onclick="delWeapon()">▲</a></div>
       @{[ input 'weaponNum','hidden' ]}
@@ -232,7 +237,7 @@ foreach my $num ('TMPL', 1 .. $pc{armourNum}){
           @{[ $num eq 'TMPL' ? "</template>" : '' ]}
 HTML
 }
-  print <<"HTML";
+print <<"HTML";
       </table>
       <div class="add-del-button"><a onclick="addArmour()">▼</a><a onclick="delArmour()">▲</a></div>
       @{[ input 'armourNum','hidden' ]}
@@ -257,14 +262,30 @@ my $text_rule = <<"HTML";
         　魔法のアイテム：<code>[魔]</code>：<img class="i-icon" src="${set::icon_dir}wp_magic.png"><br>
         　刃武器　　　　：<code>[刃]</code>：<img class="i-icon" src="${set::icon_dir}wp_edge.png"><br>
         　打撃武器　　　：<code>[打]</code>：<img class="i-icon" src="${set::icon_dir}wp_blow.png"><br>
+        　地方特産品　　：<code>[特]</code>：<img class="i-icon" src="${set::icon_dir}item_local.png"><br>
 HTML
+if ($::SW2_0) {
+  $text_rule .= <<"HTML";
+        　流派装備　　　：<code>[流]</code>：<img class="i-icon" src="${set::icon_dir}wp_school.png"><br>
+HTML
+}
+else {
+  $text_rule .= <<"HTML";
+        　流派アイテム　：<code>[流]</code>：<img class="i-icon" src="${set::icon_dir}wp_school.png"><br>
+        　アルフレイム大陸由来の流派アイテム：<code>[ア]</code>：<img class="i-icon" src="${set::icon_dir}wp_school_a.png"><br>
+        　テラスティア大陸由来の流派アイテム：<code>[テ]</code>：<img class="i-icon" src="${set::icon_dir}wp_school_t.png"><br>
+        　高揚の楽素：<code>[⤴]</code><code>[↑]</code>：<i class="s-icon uplift">⤴</i><br>
+        　鎮静の楽素：<code>[⤵]</code><code>[↓]</code>：<i class="s-icon calm">⤵</i><br>
+        　魅惑の楽素：<code>[♡]</code>：<i class="s-icon heart">♡</i><br>
+HTML
+}
 print textRuleArea( $text_rule,'「効果」「解説」' );
 
 print <<"HTML";
   </main>
   <footer>
     <p class="notes">(C)Group SNE「ソード・ワールド2.0／2.5」</p>
-    <p class="copyright">©<a href="https://yutorize.2-d.jp">ゆとらいず工房</a>「ゆとシートⅡ」ver.${main::ver}</p>
+    <p class="copyright">©<a href="https://yutorize.work">ゆとらいず工房</a>「ゆとシートⅡ」ver.${main::ver}</p>
   </footer>
   <datalist id="list-item-name">
     <option value="〈〉">
@@ -282,6 +303,7 @@ print <<"HTML";
     <option value="1H騎">
     <option value="2H">
     <option value="2H#">
+    <option value="2H投">
     <option value="振2H">
     <option value="突2H">
   </datalist>
@@ -300,7 +322,7 @@ print <<"HTML";
   <datalist id="list-age">
     <option value="現在">
     <option value="魔動機文明">
-    <option value="魔法文明">
+    <option value="古代魔法文明">
     <option value="神紀文明">
     <option value="不明">
   </datalist>
@@ -322,6 +344,8 @@ print <<"HTML";
     <option value="〈非金属鎧〉">
     <option value="〈金属鎧〉">
     <option value="〈盾〉">
+    <option value="〈魔導書〉">
+    <option value="〈龍骸〉">
     <option value="装飾品：頭">
     <option value="装飾品：顔">
     <option value="装飾品：耳">
@@ -339,7 +363,19 @@ print <<"HTML";
     <option value="特殊楽器">
     <option value="冒険道具類">
     <option value="冒険道具類（消耗品）">
-    <option value="武器や防具の強化">
+    <option value="武器強化">
+    <option value="防具強化">
+    <option value="楽器加工">
+    <option value="騎獣用防具">
+    <option value="騎獣用武装">
+    <option value="衣類">
+    <option value="道具類">
+    <option value="照明器具">
+    <option value="照明器具（消耗品）">
+    <option value="キャンプ用品">
+    <option value="食事">
+    <option value="移動費用">
+    <option value="その他">
   </datalist>
   <script>
 @{[ &commonJSVariable ]}

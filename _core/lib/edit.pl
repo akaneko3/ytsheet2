@@ -40,6 +40,10 @@ elsif($mode eq 'convert'){
     %conv_data =  %{ decode_json($data) };
     $type = $conv_data{type};
   }
+  elsif($::in{json}){
+    %conv_data =  %{ decode_json($::in{json}) };
+    $type = $conv_data{type};
+  }
   elsif($::in{backupJSON}){
     %conv_data =  %{ decode_json($::in{backupJSON} ) };
     $type = $conv_data{type};
@@ -577,7 +581,7 @@ HTML
 sub colorCostomForm {
   return <<"HTML";
       <section id="section-color" style="display:none;">
-      <h2>シートのカラー設定</h2>
+      <h2>シートの装飾設定</h2>
       <div class="box-union">
         <div class="box color-custom">
           <h2>メインカラー</h2>
@@ -595,6 +599,14 @@ sub colorCostomForm {
           </table>
           <hr>
           <p class="right"><span class="button" onclick="setDefaultColor();">デフォルトに戻す</span></p>
+        </div>
+        <div class="box font-custom">
+          <h2>名称欄のフォント</h2>
+          <fieldset>
+            <label class="check-button"><input type="radio" name="nameFont" value=""@{[ $::pc{nameFont} eq '' ? ' checked':''] } oninput="changeNameFont()"><span>フォント：<small>デフォルト</small></span></label>
+            @{[ fontCustomForm() ]}
+          </fieldset>
+          $set::test
         </div>
       </div>
       <div class="color-sample">
@@ -650,6 +662,16 @@ sub colorCostomForm {
       </section>
 HTML
 }
+## フォントカスタム欄
+sub fontCustomForm {
+  my $html;
+  my $i = 1;
+  foreach (@set::googlefonts) {
+    $html .= '<label class="check-button"><input type="radio" name="nameFont" value="'.$_->[0].'"'.($::pc{nameFont} eq $_->[0] ? ' checked':'').' oninput="changeNameFont()"><span style="font-family:'."'$_->[0]'".';font-weight:'.$_->[1].';">フォント：<small>'.$_->[0].'</small></span></label>';
+    $i++;
+  }
+  return $html.'<script>const fontList = '.JSON::PP->new->encode(\@set::googlefonts).';</script>';
+}
 
 ## テキスト整形ルール
 sub textRuleArea {
@@ -698,6 +720,7 @@ sub textRuleArea {
         　　　　　　<code>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|説明文2行目</code> 項目名を記入しないか、半角スペースで埋めると上と結合します。<br>
         折り畳み：行頭に<code>[>]項目名</code>：以降のテキストがすべて折り畳みになります。<br>
         　　　　　項目名を省略すると、自動的に「詳細」になります。<br>
+        　　　　　<code>&gt;</code>の代わりに<code>V</code><code>v</code><code>Ｖ</code><code>ｖ</code>のいずれかの文字をもちいると、デフォルトで展開状態となります（例： <code>[v]項目名</code>）。<br>
         折り畳み終了：行頭に<code>[---]</code>：（ハイフンは3つ以上任意）<br>
         　　　　　　　省略すると、以後のテキストが全て折りたたまれます。<br>
         コメントアウト：行頭に<code>//</code>：記述した行を非表示にします。

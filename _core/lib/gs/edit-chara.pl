@@ -157,7 +157,7 @@ print <<"HTML";
         <ul>
           <li onclick="sectionSelect('common');"><span>キャラ<span class="shorten">クター</span></span><span>データ</span>
           <li onclick="sectionSelect('palette');"><span><span class="shorten">ユニット(</span>コマ<span class="shorten">)</span></span><span>設定</span>
-          <li onclick="sectionSelect('color');" class="color-icon" title="カラーカスタム">
+          <li onclick="sectionSelect('color');" class="color-icon" title="シートデザインカスタム">
           <li onclick="view('text-rule')" class="help-icon" title="テキスト整形ルール">
           <li onclick="nightModeChange()" class="nightmode-icon" title="ナイトモード切替">
           <li onclick="exportAsJson()" class="download-icon" title="JSON出力">
@@ -202,12 +202,12 @@ HTML
     print '<input type="password" name="pass"><br>';
   }
   print <<"HTML";
-<input type="radio" name="protect" value="none"@{[ $pc{protect} eq 'none'?' checked':'' ]}> 保護しない（誰でも編集できるようになります）
+        <input type="radio" name="protect" value="none"@{[ $pc{protect} eq 'none'?' checked':'' ]}> 保護しない（誰でも編集できるようになります）
       </fieldset>
       </details>
 HTML
 }
-  print <<"HTML";
+print <<"HTML";
       <dl class="box" id="hide-options">
         <dt>閲覧可否設定
         <dd id="forbidden-checkbox">
@@ -246,12 +246,12 @@ print <<"HTML";
         <div>
           <dl id="character-name">
             <dt>キャラクター名
-            <dd>@{[input('characterName','text',"setName")]}
+            <dd>@{[ input 'characterName','text',"setName",'id="main-name" required' ]}
           </dl>
         </div>
         <dl id="player-name">
           <dt>プレイヤー名
-          <dd>@{[input('playerName')]}
+          <dd>@{[ input 'playerName' ]}
         </dl>
       </div>
 
@@ -482,8 +482,8 @@ print <<"HTML";
           <tbody>
 HTML
 foreach my $num ('TMPL',1 .. $pc{skillNum}) {
-  if($num eq 'TMPL'){ print '<template id="skill-template">' }
-print <<"HTML";
+  print '<template id="skill-template">' if($num eq 'TMPL');
+  print <<"HTML";
             <tr id="skill-row${num}">
               <td class="handle">
               <td class="adp  ">0
@@ -493,7 +493,7 @@ print <<"HTML";
               <td class="note ">@{[ input "skill${num}Note" ]}
               <td class="page ">@{[ input "skill${num}Page",'','','list="list-page"' ]}
 HTML
-  if($num eq 'TMPL'){ print '</template>' }
+  print '</template>' if($num eq 'TMPL');
 }
 print <<"HTML";
         </table>
@@ -521,8 +521,8 @@ print <<"HTML";
           <tbody>
 HTML
 foreach my $num ('TMPL',1 .. $pc{generalSkillNum}) {
-  if($num eq 'TMPL'){ print '<template id="general-skill-template">' }
-print <<"HTML";
+  print '<template id="general-skill-template">' if($num eq 'TMPL');
+  print <<"HTML";
             <tr id="general-skill-row${num}">
               <td class="handle">
               <td class="adp  ">0
@@ -532,7 +532,7 @@ print <<"HTML";
               <td class="note ">@{[ input "generalSkill${num}Note" ]}
               <td class="page ">@{[ input "generalSkill${num}Page",'','','list="list-page"' ]}
 HTML
-  if($num eq 'TMPL'){ print '</template>' }
+  print '</template>' if($num eq 'TMPL');
 }
 print <<"HTML";
         </table>
@@ -592,8 +592,8 @@ HTML
 my @spell_names;
 push(@spell_names, $data::class{$_}{magic}) foreach(grep { $data::class{$_}{magic} } @data::class_names);
 foreach my $num ('TMPL',1 .. $pc{spellNum}) {
-  if($num eq 'TMPL'){ print '<template id="spell-template">' }
-print <<"HTML";
+  print '<template id="spell-template">' if($num eq 'TMPL');
+  print <<"HTML";
             <tr id="spell-row${num}">
               <td class="handle">
               <td class="name  "><span class="flex">《@{[ input "spell${num}Name" ]}》</span>
@@ -604,7 +604,7 @@ print <<"HTML";
               <td class="note  ">@{[ input "spell${num}Note" ]}
               <td class="page  ">@{[ input "spell${num}Page",'','','list="list-page"' ]}
 HTML
-  if($num eq 'TMPL'){ print '</template>' }
+  print '</template>' if($num eq 'TMPL');
 }
 print <<"HTML";
         </table>
@@ -627,8 +627,8 @@ print <<"HTML";
             </tr>
 HTML
 foreach my $num ('TMPL',1 .. $pc{artsNum}) {
-  if($num eq 'TMPL'){ print '<template id="arts-template">' }
-print <<"HTML";
+  print '<template id="arts-template">' if($num eq 'TMPL');
+  print <<"HTML";
           <tbody id="arts-row${num}">
             <tr>
               <td rowspan="2" class="handle">
@@ -642,7 +642,7 @@ print <<"HTML";
               <th class="right">効果
               <td colspan="5">@{[ input "arts${num}Note" ]}
 HTML
-  if($num eq 'TMPL'){ print '</template>' }
+  print '</template>' if($num eq 'TMPL');
 }
 print <<"HTML";
         </table>
@@ -712,7 +712,7 @@ print <<"HTML";
               <tr>
 HTML
 foreach my $num ('TMPL',1 .. $pc{weaponNum}) {
-  if($num eq 'TMPL'){ print '<template id="weapon-template">' }
+  print '<template id="weapon-template">' if($num eq 'TMPL');
   print <<"HTML";
             <tbody id="weapon-row$num">
               <tr>
@@ -727,7 +727,7 @@ foreach my $num ('TMPL',1 .. $pc{weaponNum}) {
               <tr>
                 <td class="note right" colspan="4"><span class="flex"><b class="bold">備考</b>@{[ input "weapon${num}Note",'','calcWeapon' ]}</span>
 HTML
-  if($num eq 'TMPL'){ print '</template>' }
+  print '</template>' if($num eq 'TMPL');
 }
 print <<"HTML";
           </table>
@@ -936,8 +936,8 @@ print <<"HTML";
             </tr>
 HTML
 foreach my $num ('TMPL',1 .. $pc{historyNum}) {
-  if($num eq 'TMPL'){ print '<template id="history-template">' }
-print <<"HTML";
+  print '<template id="history-template">' if($num eq 'TMPL');
+  print <<"HTML";
           <tbody id="history-row${num}">
             <tr>
               <td class="handle" rowspan="2">
@@ -952,7 +952,7 @@ print <<"HTML";
             <tr>
               <td colspan="6" class="left">@{[input("history${num}Note",'','','placeholder="備考"')]}
 HTML
-  if($num eq 'TMPL'){ print '</template>' }
+  print '</template>' if($num eq 'TMPL');
 }
 print <<"HTML";
           <tfoot id="history-foot">
@@ -1031,7 +1031,7 @@ print <<"HTML";
   </main>
   <footer>
     <p class="notes">©Group SNE ©Kumo Kagyu「ゴブリンスレイヤーTRPG」</p>
-    <p class="copyright">©<a href="https://yutorize.2-d.jp">ゆとらいず工房</a>「ゆとシートⅡ」ver.${main::ver}</p>
+    <p class="copyright">©<a href="https://yutorize.work">ゆとらいず工房</a>「ゆとシートⅡ」ver.${main::ver}</p>
   </footer>
   <datalist id="list-gender">
     <option value="男">

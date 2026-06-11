@@ -49,13 +49,6 @@ body {
 #history {
   font-family: "Kosugi","Arial",var(--base-font-family-jp);
 }
-#character-name,
-.words {
-  font-family: var(--base-font-family-min);
-}
-#character-name rt {
-  font-family: Arial,var(--base-font-family-min);
-}
 
 /* // Area-Status
 ---------------------------------------------------------------------------------------------------- */
@@ -357,6 +350,18 @@ body {
     font-size: 87%;
   }
 }
+#lifepath.encroach-fixed table {
+  tbody.awaken .encroach,
+  tbody.impulse .encroach,
+  table tbody.encroach-offset,
+  tbody.neutral-encroach .suffix {
+    display: none;
+  }
+
+  tbody.neutral-encroach {
+    background-color: var(--box-even-rows-bg-color);
+  }
+}
 
 
 /* // Status / Skills
@@ -535,6 +540,7 @@ body {
 }
 #lois table tbody td.state {
   border-left: hidden;
+  padding: .3em 1px;
 }
 #lois table tbody td span[data-state] {
   display: inline-block;
@@ -1212,6 +1218,9 @@ body {
   &[type="checkbox"] + label:hover {
     opacity: 0.8;
   }
+}
+#enc-bonus.encroach-fixed p .encroach-prefix {
+  display: none;
 }
 #enc-bonus table {
   border-top: 1px;
